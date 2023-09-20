@@ -8,23 +8,41 @@ class SocialNetwork {
   }
 
   addUser(name) {
-    // Your code here
+    this.currentID += 1;
+    this.name = name;
+    this.users[this.currentID] = { id: this.currentID, name: name };
+    this.follows[this.currentID] = new Set();
+    return this.currentID;
   }
 
   getUser(userID) {
-    // Your code here
+    if (!this.users[userID]) {
+      return null;
+    }
+    return this;
   }
 
   follow(userID1, userID2) {
-    // Your code here
+    if (!this.users[userID1] || !this.users[userID2]) {
+      return false;
+    }
+    this.follows[userID1].add(userID2);
+    return true;
+
   }
 
   getFollows(userID) {
-    // Your code here
+    return this.follows[userID];
   }
 
   getFollowers(userID) {
-    // Your code here
+    let followers = new Set();
+    for (let id in this.follows) {
+      if (this.follows[id].has(userID)) {
+        followers.add(Number(id))
+      }
+    }
+    return followers;
   }
 
   getRecommendedFollows(userID, degrees) {
